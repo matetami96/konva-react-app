@@ -1,16 +1,8 @@
 import { Rect, Line, Group, Label, Tag, Text, Shape } from "react-konva";
+import { FrameProps } from "../types/App.types";
 
-const Frame = ({
-	width,
-	height,
-	onLabelClick,
-}: {
-	width: number;
-	height: number;
-	onLabelClick: (type: "width" | "height", x: number, y: number) => void;
-}) => {
-	const padding = 70; // Padding inside the frame
-	// Dynamic offsets based on dimensions
+const Frame = ({ width, height, onLabelClick }: FrameProps) => {
+	const padding = 70;
 	const helperLineOffset = Math.max(width, height) * 0.03; // Helper lines extend by 5% of the larger dimension
 	const arrowOffset = Math.max(width, height) * 0.02; // Arrow offset for spacing
 	const arrowHeadSize = Math.max(width, height) * 0.01; // Arrowhead size proportional to dimensions
