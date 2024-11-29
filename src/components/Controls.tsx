@@ -1,8 +1,11 @@
+// File: Controls.tsx
+// Description: This component provides user controls to adjust the width and height of the window and save the canvas as a PDF.
 import { ControlsProps } from "../types/App.types";
 
 const Controls = ({ width, height, setWidth, setHeight, saveAsPDF }: ControlsProps) => {
 	return (
 		<div style={{ position: "absolute", top: 10, left: 10, zIndex: 1000 }}>
+			{/* Input field for adjusting width */}
 			<div style={{ marginBottom: 10 }}>
 				<label>
 					Width:
@@ -14,6 +17,7 @@ const Controls = ({ width, height, setWidth, setHeight, saveAsPDF }: ControlsPro
 					/>
 				</label>
 			</div>
+			{/* Input field for adjusting height */}
 			<div>
 				<label>
 					Height:
@@ -25,6 +29,7 @@ const Controls = ({ width, height, setWidth, setHeight, saveAsPDF }: ControlsPro
 					/>
 				</label>
 			</div>
+			{/* Button to save the canvas as a PDF */}
 			<button
 				onClick={saveAsPDF}
 				style={{

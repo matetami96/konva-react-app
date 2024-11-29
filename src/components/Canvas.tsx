@@ -1,3 +1,5 @@
+// File: Canvas.tsx
+// Description: Manages the graphical canvas using React-Konva. Handles scaling, PDF generation, and inline input for dimensions.
 import jsPDF from "jspdf";
 import Konva from "konva";
 import { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from "react";
@@ -7,28 +9,36 @@ import Frame from "./Frame";
 import { CanvasProps, CanvasRef, Editing } from "../types/App.types";
 
 const Canvas = ({ width, height, setDimensions, stageRef }: CanvasProps) => {
+	// State to track the canvas scale for responsiveness
 	const [scale, setScale] = useState(1);
+	// State to track the size of the canvas viewport
 	const [canvasSize, setCanvasSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+	// State to track the inline editing mode for width/height labels
 	const [editing, setEditing] = useState<Editing | null>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
-	const canvasRef = useRef<Konva.Stage>(null);
+	const inputRef = useRef<HTMLInputElement>(null); // Ref for the inline input field
+	const canvasRef = useRef<Konva.Stage>(null); // Ref for the Konva Stage instance
 
+	// Effect to handle window resizing and dynamically adjust canvas scaling
 	useEffect(() => {
 		const handleResize = () => {
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
 			const maxWidth = viewportWidth * 0.8;
 			const maxHeight = viewportHeight * 0.8;
+			// Determine the scaling factor
 			const newScale = Math.min(maxWidth / width, maxHeight / height);
 			setScale(newScale);
 			setCanvasSize({ width: viewportWidth, height: viewportHeight });
 		};
+		// Adjust scaling on initial load
 		handleResize();
+		// Listen for window resize events
 		window.addEventListener("resize", handleResize);
 
 		return () => window.removeEventListener("resize", handleResize);
-	}, [width, height]);
+	}, [width, height]); // Recalculate scaling when dimensions change
 
+	// Effect to attach the saveCanvasAsPDF function to the stageRef
 	useEffect(() => {
 		if (stageRef.current && canvasRef.current) {
 			console.log("Attaching saveCanvasAsPDF to stageRef.current...");
@@ -38,6 +48,7 @@ const Canvas = ({ width, height, setDimensions, stageRef }: CanvasProps) => {
 		}
 	}, [stageRef]);
 
+	// Function to save the canvas as a PDF
 	const saveCanvasAsPDF = () => {
 		console.log("saveCanvasAsPDF called");
 		const stage = canvasRef.current;
@@ -51,6 +62,7 @@ const Canvas = ({ width, height, setDimensions, stageRef }: CanvasProps) => {
 		}
 	};
 
+	// Handle click on a label to open an inline input field
 	const handleLabelClick = (type: "width" | "height", x: number, y: number) => {
 		setEditing({
 			type,
@@ -63,11 +75,13 @@ const Canvas = ({ width, height, setDimensions, stageRef }: CanvasProps) => {
 		}, 0);
 	};
 
+	// Update state when the inline input value changes
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const value = parseInt(e.target.value, 10) || 0;
 		setEditing((prev) => prev && { ...prev, value });
 	};
 
+	// Commit the updated value when input loses focus or "Enter" is pressed
 	const handleInputBlur = () => {
 		if (editing) {
 			setDimensions({
@@ -86,6 +100,7 @@ const Canvas = ({ width, height, setDimensions, stageRef }: CanvasProps) => {
 
 	return (
 		<div style={{ position: "relative" }}>
+			{/* Konva Stage to render the graphical content */}
 			<Stage
 				width={canvasSize.width}
 				height={canvasSize.height}
@@ -94,12 +109,14 @@ const Canvas = ({ width, height, setDimensions, stageRef }: CanvasProps) => {
 				ref={canvasRef} // Attach the stage ref
 			>
 				<Layer>
+					{/* Center the frame */}
 					<Group x={canvasSize.width / 2 / scale - width / 2} y={canvasSize.height / 2 / scale - height / 2}>
 						<Frame width={width} height={height} onLabelClick={handleLabelClick} />
 					</Group>
 				</Layer>
 			</Stage>
 
+			{/* Inline input for editing dimensions */}
 			{editing && (
 				<input
 					ref={inputRef}
