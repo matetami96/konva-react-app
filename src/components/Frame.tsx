@@ -28,7 +28,7 @@ const Frame = ({
 				strokeWidth={1}
 			/>
 			<Line
-				points={[0, 0, padding, padding, padding, height - padding, 0, height]}
+				points={[width, 0, width, height, width - padding, height - padding, width - padding, padding]}
 				closed
 				fill="white"
 				stroke="black"
@@ -42,13 +42,12 @@ const Frame = ({
 				strokeWidth={1}
 			/>
 			<Line
-				points={[width, 0, width, height, width - padding, height - padding, width - padding, padding]}
+				points={[0, 0, padding, padding, padding, height - padding, 0, height]}
 				closed
 				fill="white"
 				stroke="black"
 				strokeWidth={1}
 			/>
-
 			{/* Vertical Arrow with Helper Lines */}
 			<Shape
 				sceneFunc={(ctx, shape) => {

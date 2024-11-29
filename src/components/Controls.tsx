@@ -15,7 +15,7 @@ const Controls = ({ width, height, setWidth, setHeight }: ControlsProps) => {
 						type="number"
 						value={width}
 						onChange={(e) => setWidth(parseInt(e.target.value, 10) || 0)}
-						style={{ marginLeft: 5 }}
+						style={{ marginLeft: 10 }}
 					/>
 				</label>
 			</div>
