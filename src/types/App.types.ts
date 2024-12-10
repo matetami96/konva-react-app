@@ -21,3 +21,25 @@ export type FrameProps = {
 	onLabelClick: (type: "width" | "height", x: number, y: number) => void;
 };
 export type CanvasRef = { saveCanvasAsPDF: () => void };
+
+export interface CompsByStep {
+	wizard_key: string;
+	length_net: number;
+	components: Components;
+}
+
+export interface Components {
+	id_component_core: Component[];
+	id_component_terminal_a: Component[];
+	id_component_terminal_b: Component[];
+	id_component_glider: Component[];
+	system_accessory_optional: Component[];
+}
+
+export interface Component {
+	id: number;
+	code: string;
+	name: string;
+	quantity: number;
+	um?: string;
+}

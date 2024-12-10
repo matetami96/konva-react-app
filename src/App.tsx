@@ -1,44 +1,61 @@
-// File: App.tsx
-// Description: The main application file. Manages the state for dimensions and orchestrates the rendering of `Controls` and `Canvas` components.
-import { useRef, useState } from "react";
+import LadderDrawing from "./components/LadderDrawing";
 
-import Canvas from "./components/Canvas";
-import Controls from "./components/Controls";
-
-import "./App.css";
-import { CanvasRef } from "./types/App.types";
+const compsByStep = {
+	wizard_key: "ladder",
+	length_net: 10,
+	components: {
+		id_component_core: [
+			{
+				id: 790,
+				code: "SAL204",
+				name: "SafeLadder Pro  280cm",
+				quantity: 3,
+			},
+		],
+		id_component_terminal_a: [
+			{
+				id: 728,
+				code: "SAL201",
+				name: "SafeLadder Pro bottom section  280cm",
+				quantity: 1,
+			},
+		],
+		id_component_terminal_b: [
+			{
+				id: 744,
+				code: "SAL235",
+				name: "SafeLadder Pro top / bottom end stop",
+				quantity: 1,
+			},
+		],
+		id_component_glider: [
+			{
+				id: 821,
+				code: "RHF518-SLPRO",
+				name: "Trolley Granvia 4 for SafeLadder Pro",
+				quantity: 1,
+			},
+		],
+		system_accessory_optional: [
+			{
+				id: 809,
+				code: "SAL280",
+				name: "Cage for Safeladder Pro",
+				quantity: 9,
+				um: "m",
+			},
+			{
+				id: 745,
+				code: "SAL285",
+				name: "Plastic socket 2 pieces",
+				quantity: 1,
+			},
+		],
+	},
+};
 
 const App = () => {
-	// State to track the current dimensions of the window (width and height).
-	const [dimensions, setDimensions] = useState({ width: 500, height: 1000 });
-	// Ref to pass down to the Canvas component for accessing the saveCanvasAsPDF function.
-	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-	const stageRef = useRef<CanvasRef | {}>({});
-	// Function to trigger the PDF saving functionality in Canvas.
-	const saveAsPDF = () => {
-		console.log("Saving as PDF...");
-		if (stageRef.current && (stageRef.current as CanvasRef).saveCanvasAsPDF) {
-			console.log("Calling saveCanvasAsPDF...");
-			(stageRef.current as CanvasRef).saveCanvasAsPDF();
-		} else {
-			console.error("saveCanvasAsPDF is not set on stageRef.current");
-		}
-	};
-
-	return (
-		<div className="App">
-			{/* Controls component to adjust width, height, and trigger PDF saving */}
-			<Controls
-				width={dimensions.width}
-				height={dimensions.height}
-				setWidth={(width) => setDimensions((prev) => ({ ...prev, width }))}
-				setHeight={(height) => setDimensions((prev) => ({ ...prev, height }))}
-				saveAsPDF={saveAsPDF}
-			/>
-			{/* Canvas component to render the graphical window */}
-			<Canvas width={dimensions.width} height={dimensions.height} setDimensions={setDimensions} stageRef={stageRef} />
-		</div>
-	);
+	return <LadderDrawing data={compsByStep} />;
 };
 
 export default App;
